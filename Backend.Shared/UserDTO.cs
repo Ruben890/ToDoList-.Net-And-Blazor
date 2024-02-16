@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Shared
 {
-    internal class UserDTO
+    public class UserDTO
     {
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         public string Name { get; set; } = null!;
@@ -20,19 +20,5 @@ namespace Backend.Shared
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         public string Password { get; set; } = null!;
-
-
-        public bool IsValidEmail()
-        {
-            if (string.IsNullOrWhiteSpace(Email))
-                return false;
-
-            // Verificar si el correo electrónico contiene un "@" y al menos un "." después del "@"
-            int atIndex = Email.IndexOf('@');
-            if (atIndex == -1 || atIndex == 0 || Email.IndexOf('.', atIndex) == -1)
-                return false;
-
-            return true;
-        }
     }
 }
