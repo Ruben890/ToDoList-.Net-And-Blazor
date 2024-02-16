@@ -31,9 +31,30 @@ namespace Backend.Services.Tasks
             }
         }
 
-        public Task DeleteTask(int id)
+        public async Task DeleteTask(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var taskEntity = await _context.Tasks.FindAsync(id);
+
+                if (taskEntity == null)
+                {
+                    throw new Exception($"No se encontró ninguna tarea con el ID {id}.");
+                }
+
+                _context.Tasks.Remove(taskEntity);
+                await _context.SaveChangesAsync();
+
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new Exception("Error al borrar la tarea de la db", ex);
+            }
+            catch (Exception ex)
+            {
+               
+                throw new Exception("Error desconocido al borrar la tarea.", ex);
+            }
         }
 
         public async Task<TaskDTO> GetTask(int id)
@@ -93,9 +114,37 @@ namespace Backend.Services.Tasks
 
 
 
-        public Task UpdateTask(int id, TaskDTO task)
+        public async Task UpdateTask(int id, TaskDTO updatedTask)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var taskEntity =  await _context.Tasks.FindAsync(id);
+
+                if (taskEntity == null)
+                {
+                    throw new Exception($"No se encontró ninguna tarea con el ID {id}.");
+                }
+
+              
+                taskEntity.UserId = updatedTask.UserId;
+                taskEntity.Title = updatedTask.Title;
+                taskEntity.Description = updatedTask.Description;
+                taskEntity.IsCompleted = updatedTask.IsCompleted;
+
+                await _context.SaveChangesAsync();
+
+
+            }
+            catch (DbUpdateException ex)
+            {
+
+                throw new Exception("Error al actualizar la tarea en la base de datos.", ex);
+            }
+
+
+            catch (Exception ex) {
+                throw new Exception("Error al Actulizar la tarea: " + ex.Message, ex);
+            }
         }
     }
         
