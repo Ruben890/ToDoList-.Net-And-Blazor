@@ -11,6 +11,10 @@ builder.Services.AddDbContext<ToDoListContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ToDoListContext"));
 });
 
+// Authentication JWT
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication("Bearer").AddJwtBearer();
+
 builder.Services.AddScoped<TasksService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddControllers();
