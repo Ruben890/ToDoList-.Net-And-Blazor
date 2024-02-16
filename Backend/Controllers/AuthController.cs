@@ -28,7 +28,7 @@ namespace Backend.Controllers
             }
 
             await _authService.AddUser(userDTO);
-            return Ok("Se ha registrado exitosamente");
+            return Ok(new {message = "Se ha registrado exitosamente" });
         
         }
 
@@ -40,7 +40,13 @@ namespace Backend.Controllers
 
             var response = await _authService.SingIn(data);
 
-            return Ok(response);
+            if(response != null) {
+                return Ok(response);
+            }
+
+            return BadRequest(new { error = "Las credenciales proporcionadas son incorrectas. Por favor, verifica tu correo electrónico y contraseña e intenta nuevamente." });
+
+
 
         }
 

@@ -38,7 +38,7 @@ namespace Backend.Controllers
         public async Task<ActionResult> AddTask(TaskDTO task)
         {
             await _tasksService.AddTask(task);
-            return Ok("Se ha agregado una nueva tarea");
+            return Ok( new {message = "Se ha agregado una nueva tarea" });
 
         }
 
@@ -52,7 +52,7 @@ namespace Backend.Controllers
 
             await _tasksService.UpdateTask(id, task);
 
-            return Ok("Se ha actulizado la tarea");
+            return Ok(new {message = "Se ha actulizado la tarea" });
         }
 
         [HttpDelete("RemoveTask/{id}")]
@@ -65,7 +65,7 @@ namespace Backend.Controllers
 
             await _tasksService.DeleteTask(id);
 
-            return Ok("tarea  borrada  exitosamente");
+            return Ok(new {message = "tarea  borrada  exitosamente"});
         }
 
     }
