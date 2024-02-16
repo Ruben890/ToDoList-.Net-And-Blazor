@@ -61,6 +61,7 @@ namespace Backend.Services.Users
                         return "La contraseña es incorrecta";
                     }
 
+                    return "se ha logeado";
 
                 }
                 else
@@ -76,8 +77,8 @@ namespace Backend.Services.Users
             }
         }
 
-            private string PasswordHasher(string password)
-            {
+        private string PasswordHasher(string password)
+        {
             // Generar una sal aleatoria
             byte[] salt;
             using (var rng = RandomNumberGenerator.Create())
@@ -91,35 +92,38 @@ namespace Backend.Services.Users
             {
                 byte[] hash = pbkdf2.GetBytes(20);
 
-                // Combinar la sal y el hash
-                byte[] hashBytes = new byte[36];
-                Array.Copy(salt, 0, hashBytes, 0, 16);
-                Array.Copy(hash, 0, hashBytes, 16, 20);
+                // Combinar la sal y el hash en una sola cadena
+                byte[] combinedBytes = new byte[salt.Length + hash.Length];
+                Array.Copy(salt, 0, combinedBytes, 0, salt.Length);
+                Array.Copy(hash, 0, combinedBytes, salt.Length, hash.Length);
 
-                // Convertir a una cadena hexadecimal en lugar de base64
-                string hashedPassword = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+                // Convertir la cadena combinada a base64
+                string hashedPassword = Convert.ToBase64String(combinedBytes);
 
                 return hashedPassword;
             }
         }
 
-
         private bool VerifyPassword(string password, string hashedPassword)
         {
-            // Extraer la sal y el hash de la contraseña almacenada
-            byte[] hashBytes = Convert.FromBase64String(hashedPassword);
+            // Convertir la cadena base64 de vuelta a bytes
+            byte[] combinedBytes = Convert.FromBase64String(hashedPassword);
+
+            // Extraer la sal y el hash de la cadena combinada
             byte[] salt = new byte[16];
-            Array.Copy(hashBytes, 0, salt, 0, 16);
+            byte[] hash = new byte[combinedBytes.Length - salt.Length];
+            Array.Copy(combinedBytes, 0, salt, 0, salt.Length);
+            Array.Copy(combinedBytes, salt.Length, hash, 0, hash.Length);
 
             // Derivar la clave de la contraseña utilizando PBKDF2
             using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000))
             {
-                byte[] hash = pbkdf2.GetBytes(20);
+                byte[] computedHash = pbkdf2.GetBytes(20);
 
-                // Comparar el hash calculado con el hash almacenado
-                for (int i = 0; i < 20; i++)
+                // Comparar los hashes calculados
+                for (int i = 0; i < hash.Length; i++)
                 {
-                    if (hashBytes[i + 16] != hash[i])
+                    if (hash[i] != computedHash[i])
                     {
                         return false;
                     }
@@ -127,6 +131,7 @@ namespace Backend.Services.Users
                 return true;
             }
         }
+
 
     }
 }
