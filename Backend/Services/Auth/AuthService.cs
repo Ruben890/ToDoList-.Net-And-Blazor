@@ -58,7 +58,7 @@ namespace Backend.Services.Users
 
                     if (!isPasswordCorrect)
                     {
-                        return "La contraseña es incorrecta";
+                        return null;
                     }
 
                     return "login true";
@@ -71,11 +71,10 @@ namespace Backend.Services.Users
             }
             catch (Exception ex)
             {
-
                 throw new Exception("Error interno del servidor: " + ex.Message, ex);
             }
-
         }
+
 
         private string PasswordHasher(string password)
         {
