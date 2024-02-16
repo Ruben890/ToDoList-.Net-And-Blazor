@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Backend.Services.Users;
+using Backend.Shared;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace Backend.Controllers
 {
@@ -7,25 +10,39 @@ namespace Backend.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-
-
-
-
-
-
-
-
-        private bool IsValidEmail(string Email)
+        private readonly AuthService _authService;
+        public AuthController(AuthService authService)
         {
-            if (string.IsNullOrWhiteSpace(Email))
+            _authService = authService;
+        
+        }
+
+
+
+        [HttpPost("Register")]
+        public  async Task<ActionResult> AuthRegsiter(UserDTO userDTO) 
+        {
+            if (!IsValidEmail(userDTO.Email)) 
+            {
+                return BadRequest("El email no es valido");
+            }
+
+            await _authService.AddUser(userDTO);
+            return Ok("Se ha registrado exitosamente");
+        
+        }
+
+
+        private bool IsValidEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
                 return false;
 
-            // Verificar si el correo electrónico contiene un "@" y al menos un "." después del "@"
-            int atIndex = Email.IndexOf('@');
-            if (atIndex == -1 || atIndex == 0 || Email.IndexOf('.', atIndex) == -1)
-                return false;
+            // Utilizar una expresión regular para validar el formato del correo electrónico
+            string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+            Regex regex = new Regex(pattern);
 
-            return true;
+            return regex.IsMatch(email);
         }
     }
 }
