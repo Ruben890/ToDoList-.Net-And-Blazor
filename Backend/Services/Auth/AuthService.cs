@@ -63,10 +63,7 @@ namespace Backend.Services.Users
 
                     return "login true";
                 }
-                else
-                {
-                    return "El usuario no existe";
-                }
+                
 
             }
             catch (Exception ex)
