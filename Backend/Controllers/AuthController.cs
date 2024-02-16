@@ -33,6 +33,15 @@ namespace Backend.Controllers
         }
 
 
+        [HttpPost("login")]
+        public async Task<ActionResult<string>> AuthLogin(SingInDTO singInDTO)
+        {
+            var data = singInDTO;
+
+            return Ok();
+        
+        }
+
         private bool IsValidEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
@@ -45,4 +54,8 @@ namespace Backend.Controllers
             return regex.IsMatch(email);
         }
     }
+
+
+    
+
 }
