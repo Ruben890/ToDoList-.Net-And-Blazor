@@ -20,3 +20,5 @@ CREATE TABLE Tasks (
     FOREIGN KEY (UserID) REFERENCES Users(UserId)
 );
 
+
+INSERT INTO Users (Name, LastName, Email, Password) VALUES ('Darlin Ruben', 'Nina Castillo', 'Dnina@gmail.com', 'Senju1098');

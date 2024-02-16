@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Backend.Services.Tasks;
+using Backend.Shared;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -7,6 +9,64 @@ namespace Backend.Controllers
     [ApiController]
     public class TasksController : ControllerBase
     {
+        private readonly TasksService _tasksService;
+        public TasksController( TasksService tasksService) {
+            _tasksService = tasksService;
+        
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<TaskDTO>>> GetTasks()
+        {
+            var data = await _tasksService.GetTasks();
+            return Ok(data);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TaskDTO>> GetTask(int id)
+        {
+            if (id == 0)
+            {
+                return BadRequest("no se ha proporsionado un Id");
+            }
+
+            var data = await _tasksService.GetTask(id);
+            return Ok(data);
+        }
+
+        [HttpPost("AddTask")]
+        public async Task<ActionResult> AddTask(TaskDTO task)
+        {
+            await _tasksService.AddTask(task);
+            return Ok("Se ha agregado una nueva tarea");
+
+        }
+
+        [HttpPut("UpdateTask/{id}")]
+        public async Task<ActionResult> UpdateTask(int id, TaskDTO task)
+        {
+            if(id == 0)
+            {
+                return BadRequest("no se ha proporsionado un Id");
+            }
+
+            await _tasksService.UpdateTask(id, task);
+
+            return Ok("Se ha actulizado la tarea");
+        }
+
+        [HttpDelete("RemoveTask/{id}")]
+        public async Task<ActionResult> RemoveTask(int id)
+        {
+            if (id == 0)
+            {
+                return BadRequest("no se ha proporsionado un Id");
+            }
+
+            await _tasksService.DeleteTask(id);
+
+            return Ok("tarea  borrada  exitosamente");
+        }
 
     }
 }

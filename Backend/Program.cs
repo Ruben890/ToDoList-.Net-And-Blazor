@@ -1,4 +1,5 @@
 using Backend.Models;
+using Backend.Services.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,8 @@ builder.Services.AddDbContext<ToDoListContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ToDoListContext"));
 });
+
+builder.Services.AddScoped<TasksService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

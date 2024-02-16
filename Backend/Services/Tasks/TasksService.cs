@@ -12,10 +12,17 @@ namespace Backend.Services.Tasks
             _context = toDoListContext;
         }
 
-        public async Task AddTask(TaskDTO task)
+        public async Task AddTask(TaskDTO taskDTO)
         {
             try
             {
+                var task = new Models.Tasks
+                {
+                    Title = taskDTO.Title,
+                    Description = taskDTO.Description,
+                    IsCompleted = taskDTO.IsCompleted,
+                    UserId = taskDTO.UserId,
+                };
                 _context.Add(task);
                 await _context.SaveChangesAsync();
             }
