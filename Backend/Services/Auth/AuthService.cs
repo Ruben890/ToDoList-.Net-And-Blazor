@@ -47,9 +47,34 @@ namespace Backend.Services.Users
             throw new NotImplementedException();
         }
 
-        public Task<string> SingIn(SingInDTO singInDTO)
+        public async Task<string> SingIn(SingInDTO singInDTO)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == singInDTO.Email);
+                if (user != null)
+                {
+                    bool isPasswordCorrect = VerifyPassword(singInDTO.Password, user.Password);
+
+                    if (!isPasswordCorrect)
+                    {
+                        return "La contraseña es incorrecta";
+                    }
+
+                    return "login true";
+                }
+                else
+                {
+                    return "El usuario no existe";
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error interno del servidor: " + ex.Message, ex);
+            }
+
         }
 
         private string PasswordHasher(string password)
