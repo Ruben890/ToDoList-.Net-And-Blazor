@@ -41,12 +41,10 @@ namespace Backend.Controllers
             var response = await _authService.SingIn(data);
 
             if(response != null) {
-                return Ok(response);
+                return Ok(new{token = response });
             }
 
             return BadRequest(new { error = "Las credenciales proporcionadas son incorrectas. Por favor, verifica tu correo electrónico y contraseña e intenta nuevamente." });
-
-
 
         }
 

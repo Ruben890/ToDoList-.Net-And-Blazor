@@ -1,5 +1,6 @@
 ﻿using Backend.Services.Tasks;
 using Backend.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +23,7 @@ namespace Backend.Controllers
             return Ok(data);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<TaskDTO>> GetTask(int id)
         {

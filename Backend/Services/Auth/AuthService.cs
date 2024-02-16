@@ -1,5 +1,6 @@
 ﻿using Backend.Models;
 using Backend.Services.Auth;
+using Backend.Services.JWT;
 using Backend.Shared;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -8,9 +9,11 @@ namespace Backend.Services.Users
     public class AuthService:IAuthService
     {
         private readonly ToDoListContext _context;
-        public AuthService(ToDoListContext toDoListContext)
+        private readonly JWTServices _jwtServices;
+        public AuthService(ToDoListContext toDoListContext, JWTServices jWTServices)
         {
             _context = toDoListContext;
+            _jwtServices = jWTServices;
         }
 
         public async Task AddUser(UserDTO userDTO)
@@ -56,15 +59,14 @@ namespace Backend.Services.Users
                 {
                     bool isPasswordCorrect = VerifyPassword(singInDTO.Password, user.Password);
 
-                    if (!isPasswordCorrect)
+                    if (isPasswordCorrect)
                     {
-                        return null;
+                        string jwtToken = _jwtServices.CreateJwt(singInDTO.Email);
+                        return jwtToken;
                     }
-
-                    return "login true";
                 }
-                
-
+            
+                return null;
             }
             catch (Exception ex)
             {
