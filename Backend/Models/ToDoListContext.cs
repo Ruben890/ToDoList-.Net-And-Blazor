@@ -20,12 +20,11 @@ public partial class ToDoListContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
 
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Tasks>(entity =>
         {
-            entity.HasKey(e => e.TasksId).HasName("PK__Tasks__6DD789791E38C14A");
+            entity.HasKey(e => e.TasksId).HasName("PK__Tasks__6DD789796DF8F490");
 
             entity.Property(e => e.DateCreated)
                 .HasDefaultValueSql("(getdate())")
@@ -41,12 +40,14 @@ public partial class ToDoListContext : DbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Tasks__UserID__3B75D760");
+                .HasConstraintName("FK__Tasks__UserID__4CA06362");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__Users__1788CC4C4A1F59EA");
+            entity.HasKey(e => e.UserId).HasName("PK__Users__1788CC4C81D91F7E");
+
+            entity.HasIndex(e => e.Email, "UQ__Users__A9D10534747BF131").IsUnique();
 
             entity.Property(e => e.Email)
                 .HasMaxLength(100)
