@@ -37,9 +37,14 @@ namespace Backend.Controllers
         public async Task<ActionResult<string>> AuthLogin(SingInDTO singInDTO)
         {
             var data = singInDTO;
+<<<<<<< HEAD
             var response = await _authService.SingIn(data);
 
             return Ok(response);
+=======
+
+            return Ok();
+>>>>>>> 2ef309c2080be09bd8e85c52156528790734abed
         
         }
 
