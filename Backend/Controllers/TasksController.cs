@@ -27,7 +27,7 @@ namespace Backend.Controllers
         {
             if (id == 0)
             {
-                return BadRequest("no se ha proporsionado un Id");
+                return BadRequest(new { error = "no se ha proporsionado un Id" });
             }
 
             var data = await _tasksService.GetTask(id);
@@ -47,7 +47,7 @@ namespace Backend.Controllers
         {
             if(id == 0)
             {
-                return BadRequest("no se ha proporsionado un Id");
+                return BadRequest(new { error = "no se ha proporsionado un Id" });
             }
 
             await _tasksService.UpdateTask(id, task);
@@ -60,7 +60,7 @@ namespace Backend.Controllers
         {
             if (id == 0)
             {
-                return BadRequest("no se ha proporsionado un Id");
+                return BadRequest(new { error = "no se ha proporsionado un Id" });
             }
 
             await _tasksService.DeleteTask(id);

@@ -24,7 +24,7 @@ namespace Backend.Controllers
         {
             if (!IsValidEmail(userDTO.Email)) 
             {
-                return BadRequest("El email no es valido");
+                return BadRequest(new { error = "El email no es válido" });
             }
 
             await _authService.AddUser(userDTO);
