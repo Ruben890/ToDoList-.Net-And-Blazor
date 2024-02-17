@@ -1,4 +1,5 @@
 ﻿using Backend.Shared;
+using System.Security.Claims;
 namespace Backend.Services.Auth
 {
     public interface IAuthService
@@ -7,6 +8,6 @@ namespace Backend.Services.Auth
         Task AddUser(UserDTO userDTO);
         Task<string> SingIn(SingInDTO singInDTO);
 
-        Task<UserDTO> GetMyUser(int userId);
+        Task<UserDTO> GetMyUser(ClaimsPrincipal user);
     }
 }

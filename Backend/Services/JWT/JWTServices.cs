@@ -19,10 +19,8 @@ namespace Backend.Services.JWT
         // Método para crear un token JWT con datos específicos
         public string CreateJwt(string data)
         {
-            Console.WriteLine(_jwtToken);
             var tokenHandler = new JwtSecurityTokenHandler();
             
-
             // Codifica el token JWT en bytes
             var byteKey = Encoding.UTF8.GetBytes(_jwtToken);
 

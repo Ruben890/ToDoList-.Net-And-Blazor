@@ -3,6 +3,7 @@ using Backend.Services.Auth;
 using Backend.Services.JWT;
 using Backend.Shared;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using System.Security.Cryptography;
 namespace Backend.Services.Users
 {
@@ -45,10 +46,38 @@ namespace Backend.Services.Users
         }
 
 
-        public Task<UserDTO> GetMyUser(int userId)
+        public async Task<UserDTO> GetMyUser(ClaimsPrincipal user)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var email = user.FindFirst(ClaimTypes.Email)?.Value;
+
+
+                if (email != null)
+                {
+                    var userData = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+                    if (userData != null)
+                    {
+                        var userDTO = new UserDTO
+                        {
+                            Name = userData.Name,
+                            LastName = userData.LastName,
+                            Email = userData.Email
+                        };
+
+                        return userDTO;
+                    }
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ha ocurrido un error al obtener el usuario: " + ex.Message, ex);
+            }
         }
+
 
         public async Task<string> SingIn(SingInDTO singInDTO)
         {

@@ -1,7 +1,9 @@
 ﻿using Backend.Services.Users;
 using Backend.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 
 namespace Backend.Controllers
@@ -46,6 +48,20 @@ namespace Backend.Controllers
 
             return BadRequest(new { error = "Las credenciales proporcionadas son incorrectas. Por favor, verifica tu correo electrónico y contraseña e intenta nuevamente." });
 
+        }
+
+        [HttpGet("myUser")]
+        public async Task<ActionResult<UserDTO>> GetMyUser() 
+        {
+            var currentUser = HttpContext.User;
+            var userDTO = await _authService.GetMyUser(currentUser);
+
+            if (userDTO != null)
+            {
+                return Ok(userDTO);
+            }
+
+            return NoContent();
         }
 
         private bool IsValidEmail(string email)

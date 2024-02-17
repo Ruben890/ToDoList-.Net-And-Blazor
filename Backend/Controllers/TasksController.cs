@@ -15,13 +15,22 @@ namespace Backend.Controllers
             _tasksService = tasksService;
         
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<TaskDTO>>> GetTasks()
         {
             var data = await _tasksService.GetTasks();
             return Ok(data);
         }
+
+        [HttpGet("hola")]
+        public ActionResult Get()
+        {
+
+            return Ok("hola mundo");
+        }
+
+
 
         [Authorize]
         [HttpGet("{id}")]
@@ -36,6 +45,7 @@ namespace Backend.Controllers
             return Ok(data);
         }
 
+        [Authorize]
         [HttpPost("AddTask")]
         public async Task<ActionResult> AddTask(TaskDTO task)
         {
@@ -44,6 +54,7 @@ namespace Backend.Controllers
 
         }
 
+        [Authorize]
         [HttpPut("UpdateTask/{id}")]
         public async Task<ActionResult> UpdateTask(int id, TaskDTO task)
         {
@@ -57,6 +68,7 @@ namespace Backend.Controllers
             return Ok(new {message = "Se ha actulizado la tarea" });
         }
 
+        [Authorize]
         [HttpDelete("RemoveTask/{id}")]
         public async Task<ActionResult> RemoveTask(int id)
         {
