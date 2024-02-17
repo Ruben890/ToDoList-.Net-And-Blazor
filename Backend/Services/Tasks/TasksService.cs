@@ -120,12 +120,20 @@ namespace Backend.Services.Tasks
             }
         }
 
+<<<<<<< HEAD
         public async Task<List<TaskDTO>> SearchTask(string title)
+=======
+        public async Task<List<TaskDTO>> SearchTask(string title, string description)
+>>>>>>> c490b9e29e49f31c2da983f13c5905bb9f4f20e3
         {
             try
             {
                 var results = await _context.Tasks
+<<<<<<< HEAD
                     .Where(t => t.Title.Contains(title))
+=======
+                    .Where(t => t.Title.Contains(title) || t.Description.Contains(description))
+>>>>>>> c490b9e29e49f31c2da983f13c5905bb9f4f20e3
                     .Select(t => new TaskDTO
                     {
                         // Mapea los campos necesarios de Task a TaskDTO

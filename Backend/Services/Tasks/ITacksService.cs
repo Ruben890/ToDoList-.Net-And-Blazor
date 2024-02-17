@@ -10,10 +10,6 @@ namespace Backend.Services.Tasks
         Task DeleteTask(int id);
         Task UpdateTask(int id, TaskDTO task);
 
-
-        Task<List<TaskDTO>> SearchTask(string title);
-
-
         
        
     }
