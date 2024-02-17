@@ -33,7 +33,7 @@ namespace Backend.Controllers
         {
             if (id == 0)
             {
-                return BadRequest(new { error = "no se ha proporsionado un Id" });
+                return BadRequest("no se ha proporsionado un Id");
             }
 
             var data = await _tasksService.GetTask(id);
@@ -62,7 +62,7 @@ namespace Backend.Controllers
         public async Task<ActionResult> AddTask(TaskDTO task)
         {
             await _tasksService.AddTask(task);
-            return Ok( new {message = "Se ha agregado una nueva tarea" });
+            return Ok( "Se ha agregado una nueva tarea");
 
         }
 
@@ -72,12 +72,12 @@ namespace Backend.Controllers
         {
             if(id == 0)
             {
-                return BadRequest(new { error = "no se ha proporsionado un Id" });
+                return BadRequest( "no se ha proporsionado un Id" );
             }
 
             await _tasksService.UpdateTask(id, task);
 
-            return Ok(new {message = "Se ha actulizado la tarea" });
+            return Ok( "Se ha actulizado la tarea" );
         }
 
 
@@ -89,12 +89,12 @@ namespace Backend.Controllers
         {
             if (id == 0)
             {
-                return BadRequest(new { error = "no se ha proporsionado un Id" });
+                return BadRequest( "no se ha proporsionado un Id");
             }
 
             await _tasksService.DeleteTask(id);
 
-            return Ok(new {message = "tarea  borrada  exitosamente"});
+            return Ok("tarea  borrada  exitosamente");
         }
 
     }

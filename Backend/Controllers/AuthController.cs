@@ -27,11 +27,11 @@ namespace Backend.Controllers
         {
             if (!IsValidEmail(userDTO.Email)) 
             {
-                return BadRequest(new { error = "El email no es válido" });
+                return BadRequest("El email no es válido");
             }
 
             await _authService.AddUser(userDTO);
-            return Ok(new {message = "Se ha registrado exitosamente" });
+            return Ok("Se ha registrado exitosamente" );
         
         }
 
@@ -45,15 +45,15 @@ namespace Backend.Controllers
 
             if (!IsValidEmail(singInDTO.Email))
             {
-                return BadRequest(new { error = "El email no es válido" });
+                return BadRequest("El email no es válido" );
             }
 
 
             if (response != null) {
-                return Ok(new{token = response });
+                return Ok(response);
             }
 
-            return BadRequest(new { error = "Las credenciales proporcionadas son incorrectas. Por favor, verifica tu correo electrónico y contraseña e intenta nuevamente." });
+            return BadRequest("Las credenciales proporcionadas son incorrectas. Por favor, verifica tu correo electrónico y contraseña e intenta nuevamente.");
 
         }
 

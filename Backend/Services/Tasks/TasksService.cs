@@ -77,6 +77,7 @@ namespace Backend.Services.Tasks
 
                 return new TaskDTO
                 {
+                    TasksId = taskEntity.TasksId,
                     UserId = taskEntity.UserId,
                     Title = taskEntity.Title,
                     Description = taskEntity.Description,
@@ -99,6 +100,7 @@ namespace Backend.Services.Tasks
                 var tasks = await _context.Tasks
                     .Select(t => new TaskDTO
                     {
+                        TasksId = t.TasksId,
                         UserId = t.UserId,
                         Title = t.Title,
                         Description = t.Description,
@@ -132,10 +134,11 @@ namespace Backend.Services.Tasks
                     .Select(t => new TaskDTO
                     {
                         // Mapea los campos necesarios de Task a TaskDTO
+                        TasksId = t.TasksId,
+                        UserId = t.UserId,
                         Title = t.Title,
                         Description = t.Description,
                         IsCompleted = t.IsCompleted,
-                        UserId = t.UserId,
                         DateCreated = t.DateCreated
                     })
                     .ToListAsync();
