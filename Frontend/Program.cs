@@ -9,8 +9,8 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddScoped<IAuthService, AuthServices>();
-builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<AuthServices>();
+builder.Services.AddScoped<TaskService>();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7179/api") });
 
 await builder.Build().RunAsync();

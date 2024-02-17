@@ -1,7 +1,28 @@
-﻿@page "/"
+﻿@using Frontend.Shared
+@page "/"
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<div>
+    <SearchTask OnSearch="SearchTasks" />
+</div>
 
-Welcome to your new app.
+
+<div class="container p-3 mt-5 d-flex justify-content-center">
+
+    <div>
+        <TaskCard SearchTitle="@searchTitle" />
+    </div>
+
+</div>
+
+@code {
+    private string? searchTitle;
+
+    private async Task SearchTasks(string title)
+    {
+        searchTitle = title;
+        Console.WriteLine(title);
+        StateHasChanged(); 
+    }
+}

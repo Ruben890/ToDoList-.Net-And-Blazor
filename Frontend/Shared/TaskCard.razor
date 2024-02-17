@@ -1,0 +1,63 @@
+﻿@using Frontend.Shared
+@inject TaskService TaskService
+
+@if (tasks?.Count == 0)
+{
+    <div class="container m-auto p-3">
+        <p class="fs-3">No tasks available.</p>
+    </div>
+
+}else if(tasks == null)
+{
+    <Loading/>
+}
+else
+{
+    
+    <div class="card">
+        <div class="card-body">
+            @foreach (var task in tasks)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        @task.Title
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="card-footer"></div>
+    </div>
+}
+
+
+@code{
+    private List<TaskDTO>? tasks;
+
+    [Parameter]
+    public string? SearchTitle { get; set; }
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadTaskList();
+    }
+
+    private async Task LoadTaskList()
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(SearchTitle))
+            {
+                tasks = await TaskService.GetTasks();
+            }
+            else
+            {
+                tasks = await TaskService.SearchTask(SearchTitle);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error retrieving tasks: {ex.Message}");
+        }
+    }
+}

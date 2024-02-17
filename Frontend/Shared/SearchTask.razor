@@ -1,0 +1,26 @@
+﻿@using Frontend.Services.Tasks
+@inject TaskService TaskService
+
+
+<div>
+    <div class="d-flex">
+        <input type="search" @bind="@title" placeholder="Search by title" class="form-control" />
+        <div class="ms-2">
+            <button class="btn btn-primary" @onclick="SearchTasks">Search</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string? title;
+
+    [Parameter]
+    public EventCallback<string> OnSearch { get; set; }
+
+    private async Task SearchTasks()
+    {
+        await OnSearch.InvokeAsync(title);
+    }
+}
+
+
