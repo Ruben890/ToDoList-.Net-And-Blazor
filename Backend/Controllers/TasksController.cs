@@ -42,6 +42,7 @@ namespace Backend.Controllers
 
 
         [HttpGet("Search")]
+        [Authorize]
     public async Task<IActionResult> SearchTask([FromQuery] string title)
     {
         try
