@@ -14,5 +14,6 @@ namespace Backend.Shared
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "El campo {0} es requerido.")]
         public int? UserId { get; set; }
+        public DateTime? DateCreated { get; set; } = DateTime.Now;
     }
 }
