@@ -23,5 +23,5 @@ CREATE TABLE Tasks (
 
 INSERT INTO Users (Name, LastName, Email, Password) VALUES ('Darlin Ruben', 'Nina Castillo', 'Dnina@gmail.com', 'Senju1098');
 SELECT * FROM Users;
-
+SELECT * FROM Tasks;
 DELETE FROM Users WHERE UserId = 2;
