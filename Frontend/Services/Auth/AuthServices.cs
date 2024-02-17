@@ -20,7 +20,7 @@ namespace Frontend.Services.Auth
 
         public async Task<string> AddUser(UserDTO userDTO)
         {
-            var response = await _httpClient.PostAsJsonAsync("/Auth/Register", userDTO);
+            var response = await _httpClient.PostAsJsonAsync("/api/Auth/Register", userDTO);
             if (response.IsSuccessStatusCode)
             {
                 string result = await response.Content.ReadAsStringAsync();
@@ -50,7 +50,7 @@ namespace Frontend.Services.Auth
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             // Realizar la solicitud GET a la API para obtener los datos del usuario
-            var response = await _httpClient.GetAsync("/Auth/myUser");
+            var response = await _httpClient.GetAsync("/api/Auth/myUser");
 
             // Verificar si la solicitud fue exitosa
             if (response.IsSuccessStatusCode)
@@ -71,7 +71,7 @@ namespace Frontend.Services.Auth
 
         public async Task<string> SingIn(SingInDTO singInDTO)
         {
-            var response = await _httpClient.PostAsJsonAsync("/Auth/login",singInDTO);
+            var response = await _httpClient.PostAsJsonAsync("/api/Auth/login", singInDTO);
 
             if (response.IsSuccessStatusCode)
             {

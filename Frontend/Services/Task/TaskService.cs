@@ -28,7 +28,7 @@ namespace Frontend.Services.Task
             }
 
 
-            var response = await _httpClient.PostAsJsonAsync("Tasks/AddTask", task);
+            var response = await _httpClient.PostAsJsonAsync("/api/Tasks/AddTask", task);
             if (response.IsSuccessStatusCode)
             {
                 string result = await response.Content.ReadAsStringAsync();
@@ -51,7 +51,7 @@ namespace Frontend.Services.Task
 
             try
             {
-                var response = await _httpClient.GetFromJsonAsync<TaskDTO>($"Tasks/{id}");
+                var response = await _httpClient.GetFromJsonAsync<TaskDTO>($"/api/Tasks/{id}");
 
                 return response;
             }
@@ -74,7 +74,7 @@ namespace Frontend.Services.Task
                 throw new Exception("User needs to log in again.");
             }
 
-            var response = await _httpClient.GetAsync("/Tasks");
+            var response = await _httpClient.GetAsync("/api/Tasks");
 
             if(response.IsSuccessStatusCode) 
             { 
@@ -92,7 +92,7 @@ namespace Frontend.Services.Task
 
         public async Task<List<TaskDTO>> SearchTask(string title)
         {
-            if(! await EnsureValidToken())
+            if (!await EnsureValidToken())
             {
                 throw new Exception("User needs to log in again.");
             }
@@ -101,7 +101,7 @@ namespace Frontend.Services.Task
             {
                 try
                 {
-                    var response = await _httpClient.GetFromJsonAsync<List<TaskDTO>>($"/Tasks/Search?title={title}");
+                    var response = await _httpClient.GetFromJsonAsync<List<TaskDTO>>($"/api/Tasks/Search?title={title}");
                     return response;
                 }
                 catch (Exception ex)
@@ -125,7 +125,7 @@ namespace Frontend.Services.Task
             try
             {
              
-                var response = await _httpClient.DeleteAsync($"Tasks/{id}");
+                var response = await _httpClient.DeleteAsync($"/api/Tasks/{id}");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -158,7 +158,7 @@ namespace Frontend.Services.Task
             try
             {
               
-                var response = await _httpClient.PutAsJsonAsync($"Tasks/{id}", task);
+                var response = await _httpClient.PutAsJsonAsync($"/api/Tasks/{id}", task);
 
                 
                 if (response.IsSuccessStatusCode)
