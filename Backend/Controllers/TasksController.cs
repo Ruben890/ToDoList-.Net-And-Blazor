@@ -23,12 +23,7 @@ namespace Backend.Controllers
             return Ok(data);
         }
 
-        [HttpGet("hola")]
-        public ActionResult Get()
-        {
-
-            return Ok("hola mundo");
-        }
+        
 
 
 
