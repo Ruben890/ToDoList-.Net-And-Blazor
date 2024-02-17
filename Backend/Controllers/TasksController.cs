@@ -40,6 +40,22 @@ namespace Backend.Controllers
             return Ok(data);
         }
 
+
+        [HttpGet("Search")]
+    public async Task<IActionResult> SearchTask([FromQuery] string title)
+    {
+        try
+        {
+            var tasks = await _tasksService.SearchTask(title);
+            return Ok(tasks);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "Ha ocurrido un error al buscar las tareas: " + ex.Message);
+        }
+    }
+
+
         [Authorize]
         [HttpPost("AddTask")]
         public async Task<ActionResult> AddTask(TaskDTO task)
@@ -62,6 +78,9 @@ namespace Backend.Controllers
 
             return Ok(new {message = "Se ha actulizado la tarea" });
         }
+
+
+
 
         [Authorize]
         [HttpDelete("RemoveTask/{id}")]

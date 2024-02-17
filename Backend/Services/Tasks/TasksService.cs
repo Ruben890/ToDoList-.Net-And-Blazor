@@ -80,7 +80,9 @@ namespace Backend.Services.Tasks
                     UserId = taskEntity.UserId,
                     Title = taskEntity.Title,
                     Description = taskEntity.Description,
-                    IsCompleted = taskEntity.IsCompleted
+                    IsCompleted = taskEntity.IsCompleted,
+                    DateCreated = taskEntity.DateCreated
+                    
                 };
             }
             catch (Exception ex)
@@ -100,7 +102,8 @@ namespace Backend.Services.Tasks
                         UserId = t.UserId,
                         Title = t.Title,
                         Description = t.Description,
-                        IsCompleted = t.IsCompleted
+                        IsCompleted = t.IsCompleted,
+                        DateCreated = t.DateCreated
                     })
                     .ToListAsync();
 
@@ -117,8 +120,31 @@ namespace Backend.Services.Tasks
             }
         }
 
+        public async Task<List<TaskDTO>> SearchTask(string title)
+        {
+            try
+            {
+                var results = await _context.Tasks
+                    .Where(t => t.Title.Contains(title))
+                    .Select(t => new TaskDTO
+                    {
+                        // Mapea los campos necesarios de Task a TaskDTO
+                        Title = t.Title,
+                        Description = t.Description,
+                        IsCompleted = t.IsCompleted,
+                        UserId = t.UserId,
+                        DateCreated = t.DateCreated
+                    })
+                    .ToListAsync();
 
+                return results;
 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ha ocurrido un error inesperado al buscar las tareas: " + ex.Message, ex);
+            }
+        }
 
 
         public async Task UpdateTask(int id, TaskDTO updatedTask)
