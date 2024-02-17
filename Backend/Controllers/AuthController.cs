@@ -43,7 +43,13 @@ namespace Backend.Controllers
 
             var response = await _authService.SingIn(data);
 
-            if(response != null) {
+            if (!IsValidEmail(singInDTO.Email))
+            {
+                return BadRequest(new { error = "El email no es válido" });
+            }
+
+
+            if (response != null) {
                 return Ok(new{token = response });
             }
 
