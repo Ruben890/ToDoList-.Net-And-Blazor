@@ -15,6 +15,7 @@
     private string? title;
 
     [Parameter]
+    [EditorRequired]
     public EventCallback<string> OnSearch { get; set; }
 
     private async Task SearchTasks()
