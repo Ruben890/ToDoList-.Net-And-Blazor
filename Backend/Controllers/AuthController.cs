@@ -51,6 +51,7 @@ namespace Backend.Controllers
         }
 
         [HttpGet("myUser")]
+        [Authorize]
         public async Task<ActionResult<UserDTO>> GetMyUser() 
         {
             var currentUser = HttpContext.User;
