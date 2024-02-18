@@ -1,6 +1,94 @@
-﻿@page "/login"
-<h3>Login</h3>
+﻿
+@page "/login"
+@inject AuthServices Auth
+@inject NavigationManager NavigationManager
+
+
+@using System.ComponentModel.DataAnnotations
+@using System.Text.RegularExpressions 
+
+
+<div class="container">
+
+    @if (!string.IsNullOrWhiteSpace(ErrorMessageEmail))
+    {
+
+        <div class="alert alert-danger position-absolute top-0 m-3 w-75" role="alert">
+            <p class="text-danger fs-4 text-center">@ErrorMessageEmail</p>
+        </div>
+       
+    }
+
+    @if (!string.IsNullOrWhiteSpace(ErrorMessagePassword))
+    {
+        <div class="alert alert-danger position-absolute top-0 m-3 w-75 left-5" role="alert" >
+            <p class="text-danger fs-4 text-center">@ErrorMessagePassword</p>
+        </div>
+       
+    }
+
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="container m-auto p-3 w-50 border rounded">
+            <h1 class="fs-3 text-center w-100 border-bottom mt-3 p-2 pb-3">Login User</h1>
+            <form @onsubmit="HandleSubmit">
+                <div class="container p-3">
+
+                    <label for="email" class="form-label mt-5">
+                        Email
+                    </label>
+                    <input type="email" @bind="user.Email" placeholder="Email" class="form-control p-2" />
+
+                    <label class="form-label mt-5" for="password">
+                        Password
+                    </label>
+                    <input type="password" @bind="user.Password" class="form-control p-2" placeholder="Password" />
+
+                </div>
+
+                <div class="p-2 d-flex justify-content-center text-center mt-2">
+                    <button type="submit" class="btn w-50 btn-primary p-1 fs-4">
+                        Login
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
 
 @code {
 
+    private SingInDTO user = new SingInDTO();
+    private string? ErrorMessageEmail;
+    private string? ErrorMessagePassword;
+
+    private async Task HandleSubmit()
+    {
+        if (!IsValidEmail(user.Email))
+        {
+            ErrorMessageEmail = "Please enter a valid email address.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(user.Password))
+        {
+            ErrorMessagePassword = "Please enter your password.";
+            return;
+        }
+
+            await Auth.SingIn(user);
+         NavigationManager.NavigateTo("/");
+    }
+
+    private bool IsValidEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+            return false;
+
+        // Utilizar una expresión regular para validar el formato del correo electrónico
+        string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+        Regex regex = new Regex(pattern);
+
+        return regex.IsMatch(email);
+    }
 }
