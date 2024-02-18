@@ -1,5 +1,6 @@
 ﻿
 @page "/login"
+@layout AuthLayaut
 @inject AuthServices Auth
 @inject NavigationManager NavigationManager
 
@@ -36,12 +37,12 @@
                     <label for="email" class="form-label mt-5">
                         Email
                     </label>
-                    <input type="email" @bind="user.Email" placeholder="Email" class="form-control p-2" />
+                    <input type="email" @bind="user.Email" placeholder="Email" class="form-control p-2" name="email" />
 
                     <label class="form-label mt-5" for="password">
                         Password
                     </label>
-                    <input type="password" @bind="user.Password" class="form-control p-2" placeholder="Password" />
+                    <input type="password" @bind="user.Password" class="form-control p-2" placeholder="Password" name="password" />
 
                 </div>
 
