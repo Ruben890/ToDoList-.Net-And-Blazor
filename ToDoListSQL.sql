@@ -21,7 +21,14 @@ CREATE TABLE Tasks (
 );
 
 
-INSERT INTO Users (Name, LastName, Email, Password) VALUES ('Darlin Ruben', 'Nina Castillo', 'Dnina@gmail.com', 'Senju1098');
+-- INSERT INTO Users (Name, LastName, Email, Password) VALUES ('Darlin Ruben', 'Nina Castillo', 'Dnina@gmail.com', 'Senju1098');
 SELECT * FROM Users;
 SELECT * FROM Tasks;
-DELETE FROM Users WHERE UserId = 2;
+DELETE FROM Users WHERE UserId = 1;
+
+UPDATE Users
+SET Name = 'Rosanny Escarlet'
+WHERE UserId = 1;
+
+-- UPDATE Tasks
+-- SET UserID = 3;
