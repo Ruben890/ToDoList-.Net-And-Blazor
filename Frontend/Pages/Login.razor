@@ -1,12 +1,11 @@
-﻿
-@page "/login"
+﻿@page "/login"
 @layout AuthLayaut
 @inject AuthServices Auth
 @inject NavigationManager NavigationManager
 
 
 @using System.ComponentModel.DataAnnotations
-@using System.Text.RegularExpressions 
+@using System.Text.RegularExpressions
 
 
 <div class="container">
@@ -17,15 +16,15 @@
         <div class="alert alert-danger position-absolute top-0 m-3 w-75" role="alert">
             <p class="text-danger fs-4 text-center">@ErrorMessageEmail</p>
         </div>
-       
+
     }
 
     @if (!string.IsNullOrWhiteSpace(ErrorMessagePassword))
     {
-        <div class="alert alert-danger position-absolute top-0 m-3 w-75 left-5" role="alert" >
+        <div class="alert alert-danger position-absolute top-0 m-3 w-75 left-5" role="alert">
             <p class="text-danger fs-4 text-center">@ErrorMessagePassword</p>
         </div>
-       
+
     }
 
     <div class="container d-flex justify-content-center align-items-center vh-100">
@@ -77,8 +76,8 @@
             return;
         }
 
-            await Auth.SingIn(user);
-         NavigationManager.NavigateTo("/");
+        await Auth.SingIn(user);
+        NavigationManager.NavigateTo("/");
     }
 
     private bool IsValidEmail(string email)

@@ -12,19 +12,19 @@ namespace Frontend.Services.Task
     {
         private readonly HttpClient _httpClient;
         private readonly IJSRuntime _jsRuntime;
-        
-        public TaskService(HttpClient httpClient, IJSRuntime jSRuntime )
+
+        public TaskService(HttpClient httpClient, IJSRuntime jSRuntime)
         {
             _httpClient = httpClient;
             _jsRuntime = jSRuntime;
-        
+
         }
-       
+
         public async Task<string> AddTask(TaskDTO task)
         {
             if (!await EnsureValidToken())
             {
-                return "User needs to log in again."; 
+                return "User needs to log in again.";
             }
 
 
@@ -57,7 +57,7 @@ namespace Frontend.Services.Task
             }
             catch (HttpRequestException ex)
             {
-               
+
                 throw new Exception("Failed to retrieve task. Please check your internet connection and try again.", ex);
             }
             catch (Exception ex)
@@ -76,15 +76,15 @@ namespace Frontend.Services.Task
 
             var response = await _httpClient.GetAsync("/api/Tasks");
 
-            if(response.IsSuccessStatusCode) 
-            { 
+            if (response.IsSuccessStatusCode)
+            {
                 string JsonContent = await response.Content.ReadAsStringAsync();
                 var tasks = JsonConvert.DeserializeObject<List<TaskDTO>>(JsonContent);
 
                 return tasks;
-            
+
             }
-            
+
             throw new HttpRequestException($"Failed to fetch tasks data. Status code: {response.StatusCode}");
 
 
@@ -116,7 +116,7 @@ namespace Frontend.Services.Task
 
         public async Task<string> DeleteTask(int id)
         {
-            
+
             if (!await EnsureValidToken())
             {
                 throw new Exception("User needs to log in again.");
@@ -124,7 +124,7 @@ namespace Frontend.Services.Task
 
             try
             {
-             
+
                 var response = await _httpClient.DeleteAsync($"/api/Tasks/{id}");
 
                 if (response.IsSuccessStatusCode)
@@ -142,14 +142,14 @@ namespace Frontend.Services.Task
             }
             catch (Exception ex)
             {
-            
+
                 throw new Exception("An error occurred while deleting the task.", ex);
             }
         }
 
         public async Task<string> UpdateTask(int id, TaskDTO task)
         {
-           
+
             if (!await EnsureValidToken())
             {
                 throw new Exception("User needs to log in again.");
@@ -157,28 +157,28 @@ namespace Frontend.Services.Task
 
             try
             {
-              
+
                 var response = await _httpClient.PutAsJsonAsync($"/api/Tasks/{id}", task);
 
-                
+
                 if (response.IsSuccessStatusCode)
                 {
                     return "Task updated successfully.";
                 }
                 else
                 {
-                    
+
                     return $"Failed to update task. Status code: {response.StatusCode}";
                 }
             }
             catch (HttpRequestException ex)
             {
-              
+
                 throw new Exception("Failed to update task. Please check your internet connection and try again.", ex);
             }
             catch (Exception ex)
             {
-               
+
                 throw new Exception("An error occurred while updating the task.", ex);
             }
         }

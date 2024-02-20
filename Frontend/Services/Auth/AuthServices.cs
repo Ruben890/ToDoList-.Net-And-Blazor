@@ -24,14 +24,14 @@ namespace Frontend.Services.Auth
             if (response.IsSuccessStatusCode)
             {
                 string result = await response.Content.ReadAsStringAsync();
-                return  result;
+                return result;
             }
-            
+
             // Manejar el caso en que la solicitud no fue exitosa
             // Por ejemplo, lanzar una excepción o devolver un valor predeterminado
             throw new HttpRequestException($"Failed to add user. Status code: {response.StatusCode}");
 
-            
+
 
 
         }
@@ -83,14 +83,14 @@ namespace Frontend.Services.Auth
 
                 return "Se ha logeado corectamente";
             }
-            
 
-                throw new HttpRequestException($"Failed to sign in. Status code: {response.StatusCode}");
 
-            
+            throw new HttpRequestException($"Failed to sign in. Status code: {response.StatusCode}");
+
+
         }
     }
 
 }
 
-    
+

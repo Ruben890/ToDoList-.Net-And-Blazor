@@ -1,6 +1,100 @@
 ﻿@page "/register"
-<h3>Registerrazor</h3>
+@layout AuthLayaut
+@inject AuthServices Auth
+@inject NavigationManager Navigation
+
+@using System.Text.RegularExpressions
+
+
+<div  class="container p-3 m-auto">
+    @if (!string.IsNullOrWhiteSpace(errorMessage))
+    {
+        <div class="alert alert-danger position-absolute top-0 m-3 w-75" role="alert">
+            <p class="text-danger fs-4 text-center">@errorMessage</p>
+        </div>
+
+    }
+
+
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+
+        <div class="container m-auto p-3 w-50 border rounded">
+            <form class="form_container" @onsubmit="HandleSubmit">
+                <div class="container p-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" name="name" @bind="user.Name" placeholder="Name" class="form-control" />
+                    <label for="Lastname" class="form-label">LastName</label>
+                    <input type="text" name="Lastname" @bind="user.LastName" placeholder="LastName" class="form-control" />
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" name="email" @bind="user.Email" placeholder="Email" class="form-control">
+                    <label for="Password" class="form-label">Password</label>
+                    <input type="password" name="Password" @bind="user.Password" class="form-control" placeholder="Password" />
+                </div>
+                <div class="d-flex justify-content-center mt-2">
+                    <button type="submit" class="btn w-50 btn-primary p-1 fs-4">
+                        Registrate
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
 
 @code {
+    private UserDTO user = new UserDTO();
+    private string? errorMessage;
+
+    private async Task  HandleSubmit()
+    {
+        try
+        {
+            if(user is null)
+            {
+                errorMessage = "los no puede aver campos vacios";
+                return;
+            };
+
+            if (!IsValidEmail(user!.Email))
+            {
+                errorMessage = "El email es invalido";
+                return;
+            }
+
+            await Auth.AddUser(user);
+            Navigation.NavigateTo("/login");
+
+
+
+        }catch(Exception Ex)
+        {
+            Console.WriteLine("ha ocurrido un eror al registrarse" + Ex.Message, Ex);
+            errorMessage = Ex.Message;
+        }
+
+    }
+
+   
+
+
+    private bool IsValidEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+            return false;
+
+        // Utilizar una expresión regular para validar el formato del correo electrónico
+        string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+        Regex regex = new Regex(pattern);
+
+        return regex.IsMatch(email);
+    }
 
 }
