@@ -30,11 +30,11 @@ public partial class ToDoListContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.Description)
-                .HasMaxLength(100)
+                .HasMaxLength(300)
                 .IsUnicode(false);
             entity.Property(e => e.IsCompleted).HasDefaultValue(false);
             entity.Property(e => e.Title)
-                .HasMaxLength(50)
+                .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.UserId).HasColumnName("UserID");
 

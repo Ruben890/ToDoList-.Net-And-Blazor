@@ -12,8 +12,8 @@ CREATE TABLE Users (
 
 CREATE TABLE Tasks (
     TasksId INT PRIMARY KEY IDENTITY(1,1),
-    Title VARCHAR(50) NOT NULL,
-    Description VARCHAR(100) NOT NULL,
+    Title VARCHAR(100) NOT NULL,
+    Description VARCHAR(300) NOT NULL,
     IsCompleted BIT NOT NULL DEFAULT 0, -- BIT para representar un valor booleano
     DateCreated DATETIME DEFAULT GETDATE(), -- Cambié el nombre de la columna para hacerlo más claro
     UserID INT,
