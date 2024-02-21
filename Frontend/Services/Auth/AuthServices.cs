@@ -88,7 +88,7 @@ namespace Frontend.Services.Auth
                 var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/Cookies.js");
 
                 // Guardar el token en una cookie utilizando JavaScript interop
-                await module.InvokeVoidAsync("AddCookies", "AuthToken", token, 7);
+                await module.InvokeVoidAsync("AddCookies", "AuthToken", token, 1);
 
                 return "Se ha logeado corectamente";
             }

@@ -1,27 +1,43 @@
 ﻿@using Frontend.Shared
 @inject TaskService TaskService
 
+
+
+
+
 @if (tasks?.Count == 0)
 {
-    <div class="container m-auto p-3">
-        <p class="fs-3">No tasks available.</p>
+    <div class="container m-auto p-3 text-center">
+        <p class="fs-1 text-wrap">No tasks available.</p>
     </div>
 
-}else if(tasks is null)
+}
+else if (tasks is null)
 {
-    <Loading/>
+    <Loading />
 }
 else
 {
-    
+
     <div class="p-3 m-2">
         <div>
             @foreach (var task in tasks)
             {
+                string headerColorClass = task.IsCompleted ? "bg-success" : "bg-danger";
+                string isCompleteContent = task.IsCompleted ? "Complete" : " Incomplete";
+                string truncatedDescription = task.Description.Length > 100 ? task.Description.Substring(0, 100) + "..." : task.Description;
+
                 <div class="card p-2 m-2 mt-5">
-                    <h2>@task.Title</h2>
+                    <div class="d-flex w-100 justify-content-between card-header @headerColorClass">
+
+                        <h2>@task.Title</h2>
+                        <button class="text-white p-2 text-center fs-4 btn border btn-isCompleteC">
+                            @isCompleteContent
+                        </button>
+                    </div>
+
                     <div class="card-body">
-                        <p>@task.Description</p>
+                        <p>@truncatedDescription</p>
                     </div>
 
                     <div class="card-footer">
@@ -30,13 +46,14 @@ else
                 </div>
             }
         </div>
-       
+
     </div>
 }
 
 
-@code{
+@code {
     private List<TaskDTO>? tasks;
+
 
     [Parameter]
     [EditorRequired]

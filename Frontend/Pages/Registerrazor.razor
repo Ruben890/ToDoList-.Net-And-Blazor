@@ -51,6 +51,7 @@
 
 @code {
     private UserDTO user = new UserDTO();
+    private SingInDTO Userlogin => new SingInDTO { Email = user.Email, Password = user.Password };
     private string? errorMessage;
 
     private async Task  HandleSubmit()
@@ -70,7 +71,8 @@
             }
 
             await Auth.AddUser(user);
-            Navigation.NavigateTo("/login");
+            await Auth.SingIn(Userlogin);
+            Navigation.NavigateTo("/");
 
 
 

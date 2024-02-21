@@ -14,7 +14,7 @@ namespace Backend.Shared
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         public string Description { get; set; } = null!;
 
-        public bool? IsCompleted { get; set; } = false;
+        public bool IsCompleted { get; set; } = false;
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "El campo {0} es requerido.")]
         public int? UserId { get; set; }
