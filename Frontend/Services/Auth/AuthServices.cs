@@ -38,8 +38,12 @@ namespace Frontend.Services.Auth
 
         public async Task<UserDTO> GetMyUser()
         {
-            // Leer el token de las cookies utilizando JavaScript interop
-            string token = await _jsRuntime.InvokeAsync<string>("document.getCookie", "AuthToken");
+            // Importar el módulo JavaScript que contiene la función getCookies
+            var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/Cookies.js");
+            // Invocar la función JavaScript GetCookie para obtener el valor de la cookie "AuthToken"
+            var token = await module.InvokeAsync<string>("GetCookie", "AuthToken");
+
+
 
             if (string.IsNullOrEmpty(token))
             {
@@ -71,6 +75,8 @@ namespace Frontend.Services.Auth
 
         public async Task<string> SingIn(SingInDTO singInDTO)
         {
+
+
             var response = await _httpClient.PostAsJsonAsync("/api/Auth/login", singInDTO);
 
             if (response.IsSuccessStatusCode)
@@ -78,8 +84,11 @@ namespace Frontend.Services.Auth
                 // Leer el token de la respuesta
                 string token = await response.Content.ReadAsStringAsync();
 
+                // Importar el módulo JavaScript que contiene la función getCookies
+                var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/Cookies.js");
+
                 // Guardar el token en una cookie utilizando JavaScript interop
-                await _jsRuntime.InvokeVoidAsync("document.setCookie", "AuthToken", token);
+                await module.InvokeVoidAsync("AddCookies", "AuthToken", token, 7);
 
                 return "Se ha logeado corectamente";
             }

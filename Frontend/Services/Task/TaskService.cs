@@ -186,8 +186,10 @@ namespace Frontend.Services.Task
 
         private async Task<bool> EnsureValidToken()
         {
-            // Leer el token de las cookies utilizando JavaScript interop
-            string token = await _jsRuntime.InvokeAsync<string>("document.getCookie", "AuthToken");
+            // Importar el módulo JavaScript que contiene la función getCookies
+            var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/Cookies.js");
+            // Invocar la función JavaScript GetCookie para obtener el valor de la cookie "AuthToken"
+            var token = await module.InvokeAsync<string>("GetCookie", "AuthToken");
             if (string.IsNullOrEmpty(token))
             {
                 return false;
