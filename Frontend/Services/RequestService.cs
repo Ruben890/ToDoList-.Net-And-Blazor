@@ -40,8 +40,8 @@ namespace Frontend.Services
         {
             try
             {
-                var content = new StringContent(jsonObject, UnicodeEncoding.UTF8, "aplication/json");
-                var postResult = await _httpClient.PostAsJsonAsync(BaseAddres + action, content);
+                var content = new StringContent(jsonObject, UnicodeEncoding.UTF8, "application/json");
+                var postResult = await _httpClient.PostAsync(BaseAddres + action, content);
                 var postContent = await postResult.Content.ReadAsStringAsync();
                 if (!postResult.IsSuccessStatusCode)
                 {

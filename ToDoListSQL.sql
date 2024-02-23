@@ -26,6 +26,8 @@ SELECT * FROM Users;
 SELECT * FROM Tasks;
 DELETE FROM Users WHERE UserId = 1;
 
+
+DELETE Users WHERE UserId = 2;
 UPDATE Users
 SET Name = 'Rosanny Escarlet'
 WHERE UserId = 1;
