@@ -17,7 +17,7 @@ namespace Backend.Controllers
         }
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<List<TaskDTO>>> GetTasks()
+        public async Task<ActionResult<List<ToDoDTO>>> GetTasks()
         {
             var data = await _tasksService.GetTasks();
             return Ok(data);
@@ -29,7 +29,7 @@ namespace Backend.Controllers
 
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<ActionResult<TaskDTO>> GetTask(int id)
+        public async Task<ActionResult<ToDoDTO>> GetTask(int id)
         {
             if (id == 0)
             {
@@ -59,7 +59,7 @@ namespace Backend.Controllers
 
         [Authorize]
         [HttpPost("AddTask")]
-        public async Task<ActionResult> AddTask(TaskDTO task)
+        public async Task<ActionResult> AddTask(ToDoDTO task)
         {
             await _tasksService.AddTask(task);
             return Ok( "Se ha agregado una nueva tarea");
@@ -68,7 +68,7 @@ namespace Backend.Controllers
 
         [Authorize]
         [HttpPut("UpdateTask/{id}")]
-        public async Task<ActionResult> UpdateTask(int id, TaskDTO task)
+        public async Task<ActionResult> UpdateTask(int id, ToDoDTO task)
         {
             if(id == 0)
             {

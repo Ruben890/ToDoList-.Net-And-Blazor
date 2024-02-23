@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Backend.Models;
 
-public partial class Tasks
+public partial class ToDo
 {
     public int TasksId { get; set; }
 

@@ -15,14 +15,14 @@ public partial class ToDoListContext : DbContext
     {
     }
 
-    public virtual DbSet<Tasks> Tasks { get; set; }
+    public virtual DbSet<ToDo> Tasks { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Tasks>(entity =>
+        modelBuilder.Entity<ToDo>(entity =>
         {
             entity.HasKey(e => e.TasksId).HasName("PK__Tasks__6DD789796DF8F490");
 

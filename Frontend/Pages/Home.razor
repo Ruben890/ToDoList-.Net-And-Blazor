@@ -3,20 +3,20 @@
 
 <PageTitle>Home</PageTitle>
 
-<div>
+@* <div>
     <SearchTask OnSearch="SearchTasks" />
-</div>
+</div> *@
 
 
 <div class="container p-3 mt-5">
 
     <div>
-        <TaskCard SearchTitle="@searchTitle" />
+        <TaskCard />
     </div>
 
 </div>
 
-@code {
+@* @code {
     private string? searchTitle;
 
     private async Task SearchTasks(string title)
@@ -24,4 +24,4 @@
         searchTitle = title;
         StateHasChanged();
     }
-}
+} *@

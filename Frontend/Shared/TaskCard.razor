@@ -1,27 +1,29 @@
-﻿@using Frontend.Shared
-@inject TaskService TaskService
+﻿@using Frontend.Services
+@using Frontend.Shared
+@using Newtonsoft.Json
+@inject ToDoService TaskService
 
 
 
 
 
-@if (tasks?.Count == 0)
+@* @if (ToDoList.Count = 0)
 {
     <div class="container m-auto p-3 text-center">
         <p class="fs-1 text-wrap">No tasks available.</p>
     </div>
 
 }
-else if (tasks is null)
+else if (ToDoList is null)
 {
     <Loading />
 }
 else
 {
-
+ *@
     <div class="p-3 m-2">
         <div>
-            @foreach (var task in tasks)
+            @foreach (var task in ToDoList!)
             {
                 string headerColorClass = task.IsCompleted ? "bg-success" : "bg-danger";
                 string isCompleteContent = task.IsCompleted ? "Complete" : " Incomplete";
@@ -48,39 +50,30 @@ else
         </div>
 
     </div>
-}
-
+@* }
+ *@
 
 @code {
-    private List<TaskDTO>? tasks;
+    public List<ToDoDTO>? ToDoList { get; set; }
 
+    [Inject]
+    public IRequestService? Service { get; set; }
 
     [Parameter]
-    [EditorRequired]
     public string? SearchTitle { get; set; }
 
 
     protected override async Task OnParametersSetAsync()
     {
-        await LoadTaskList();
+        ToDoList ??= new();
+
+        var response = await Service.GetAllAsync("Tasks");
+        if(string.IsNullOrEmpty(response))
+        {
+            ToDoList = JsonConvert.DeserializeObject<List<ToDoDTO>>(response);
+        }
+
     }
 
-    private async Task LoadTaskList()
-    {
-        try
-        {
-            if (string.IsNullOrWhiteSpace(SearchTitle))
-            {
-                tasks = await TaskService.GetTasks();
-            }
-            else
-            {
-                tasks = await TaskService.SearchTask(SearchTitle);
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error retrieving tasks: {ex.Message}");
-        }
-    }
+
 }

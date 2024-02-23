@@ -20,10 +20,8 @@ namespace Backend.Controllers
         
         }
 
-
-
         [HttpPost("Register")]
-        public  async Task<ActionResult> AuthRegsiter(UserDTO userDTO) 
+        public  async Task<ActionResult> Register(UserDTO userDTO) 
         {
             if (!IsValidEmail(userDTO.Email)) 
             {
@@ -37,7 +35,7 @@ namespace Backend.Controllers
 
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> AuthLogin(SingInDTO singInDTO)
+        public async Task<ActionResult<bool>> AuthLogin(SingInDTO singInDTO)
         {
             var data = singInDTO;
 
@@ -45,7 +43,7 @@ namespace Backend.Controllers
 
             if (!IsValidEmail(singInDTO.Email))
             {
-                return BadRequest("El email no es válido" );
+                return false;
             }
 
 

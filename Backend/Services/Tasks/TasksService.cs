@@ -12,11 +12,11 @@ namespace Backend.Services.Tasks
             _context = toDoListContext;
         }
 
-        public async Task AddTask(TaskDTO taskDTO)
+        public async Task AddTask(ToDoDTO taskDTO)
         {
             try
             {
-                var task = new Models.Tasks
+                var task = new Models.ToDo
                 {
                     Title = taskDTO.Title,
                     Description = taskDTO.Description,
@@ -64,7 +64,7 @@ namespace Backend.Services.Tasks
             }
         }
 
-        public async Task<TaskDTO> GetTask(int id)
+        public async Task<ToDoDTO> GetTask(int id)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace Backend.Services.Tasks
                     throw new Exception($"No se encontró ninguna tarea con el ID {id}.");
                 }
 
-                return new TaskDTO
+                return new ToDoDTO
                 {
                     TasksId = taskEntity.TasksId,
                     UserId = taskEntity.UserId,
@@ -93,12 +93,12 @@ namespace Backend.Services.Tasks
         }
 
 
-        public async Task<List<TaskDTO>> GetTasks()
+        public async Task<List<ToDoDTO>> GetTasks()
         {
             try
             {
                 var tasks = await _context.Tasks
-                    .Select(t => new TaskDTO
+                    .Select(t => new ToDoDTO
                     {
                         TasksId = t.TasksId,
                         UserId = t.UserId,
@@ -123,7 +123,7 @@ namespace Backend.Services.Tasks
         }
 
 
-        public async Task<List<TaskDTO>> SearchTask(string title)
+        public async Task<List<ToDoDTO>> SearchTask(string title)
 
         {
             try
@@ -131,7 +131,7 @@ namespace Backend.Services.Tasks
                 var results = await _context.Tasks
 
                     .Where(t => t.Title.Contains(title))
-                    .Select(t => new TaskDTO
+                    .Select(t => new ToDoDTO
                     {
                         // Mapea los campos necesarios de Task a TaskDTO
                         TasksId = t.TasksId,
@@ -153,7 +153,7 @@ namespace Backend.Services.Tasks
         }
 
 
-        public async Task UpdateTask(int id, TaskDTO updatedTask)
+        public async Task UpdateTask(int id, ToDoDTO updatedTask)
         {
             try
             {

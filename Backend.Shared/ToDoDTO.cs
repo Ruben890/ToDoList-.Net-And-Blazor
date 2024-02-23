@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend.Shared
 {
-    public class TaskDTO
+    public class ToDoDTO
     {
 
         public int TasksId { get; set; }

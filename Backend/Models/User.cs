@@ -15,5 +15,5 @@ public partial class User
 
     public string Password { get; set; } = null!;
 
-    public virtual ICollection<Tasks> Tasks { get; set; } = new List<Tasks>();
+    public virtual ICollection<ToDo> Tasks { get; set; } = new List<ToDo>();
 }
