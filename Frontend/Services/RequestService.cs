@@ -53,22 +53,6 @@ namespace Frontend.Services
         }
 
 
-        public async Task<string> SearchToDoTitleAsync(string query, string action)
-        {
-            try
-            {
-                var url = $"{BaseAddres}{action}?title={query}";
-                var response = await _httpClient.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync();
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Ha ocurrido un error al buscar un toDo por el titulo:{ex.Message}");
-            }
-        }
-
         public async Task<(bool isSuccess, string responseContent)> PostAsync(string jsonObject, string action)
         {
             try

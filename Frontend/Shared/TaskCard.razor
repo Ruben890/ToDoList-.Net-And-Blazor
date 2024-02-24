@@ -4,10 +4,14 @@
 
 
 
-
-
-
-
+@if (ToDoList.Count <= 0)
+{
+    <div class="container p-3 d-flex justify-content-center m-3">
+        <div class="p-2">
+            <p class="fs-3"> No hay tareas Disponibles </p>
+        </div>
+    </div>
+}
 
 <div class="p-3 m-2">
     <div>
@@ -38,8 +42,7 @@
     </div>
 
 </div>
-@* }
- *@
+
 
 @code {
     public List<ToDoDTO>? ToDoList { get; set; }
@@ -48,6 +51,7 @@
     public IRequestService? Service { get; set; }
 
     [Parameter]
+    [EditorRequired]
     public string? SearchTitle { get; set; }
 
 
@@ -56,9 +60,10 @@
         ToDoList ??= new();
 
         var token = await Service!.GetCookie("AuthToken");
+        string url = string.IsNullOrEmpty(SearchTitle) ? "Tasks" : $"Tasks/Search?title={SearchTitle}";
         Service.SetAuthorizationToken(token);
 
-        var response = await Service!.GetAllAsync("Tasks");
+        var response = await Service!.GetAllAsync(url);
         if (!string.IsNullOrEmpty(response))
         {
             ToDoList = JsonConvert.DeserializeObject<List<ToDoDTO>>(response);
