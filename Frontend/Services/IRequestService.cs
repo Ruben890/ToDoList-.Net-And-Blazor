@@ -1,11 +1,17 @@
-﻿namespace Frontend.Services
+﻿using Microsoft.JSInterop;
+
+namespace Frontend.Services
 {
     public interface IRequestService
     {
-        public Task<string> GetAllAsync(string action);
-        public Task<string> GetAsync(int id, string action);
-        Task<bool> PostAsync(string jsonObject, string action);
-        Task<bool> PutAsync(int id, string jsonobject, string action);
+        Task CreateCookies(string name, string value, int daysToExpire);
+        Task<bool> DeleteAsync(int id, string action);
+        Task<string> GetAllAsync(string action);
+        Task<string> GetAsync(int id, string action);
+        Task<string> GetCookie(string nameCookie);
+        Task<(bool isSuccess, string responseContent)> PostAsync(string jsonObject, string action);
+        Task<bool> PutAsync(int id, string jsonObject, string action);
         Task<string> SearchToDoTitleAsync(string query, string action);
+        void SetAuthorizationToken(string authorizationToken);
     }
 }

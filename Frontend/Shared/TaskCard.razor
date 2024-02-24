@@ -55,8 +55,11 @@
     {
         ToDoList ??= new();
 
+        var token = await Service!.GetCookie("AuthToken");
+        Service.SetAuthorizationToken(token);
+
         var response = await Service!.GetAllAsync("Tasks");
-        if (string.IsNullOrEmpty(response))
+        if (!string.IsNullOrEmpty(response))
         {
             ToDoList = JsonConvert.DeserializeObject<List<ToDoDTO>>(response);
         }

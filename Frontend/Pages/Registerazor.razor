@@ -1,8 +1,6 @@
 ﻿@page "/register"
 @layout AuthLayaut
 @inject NavigationManager Navigation
-@inject JSRuntime Js
-
 @using System.Text.RegularExpressions
 @using Frontend.Services
 @using Newtonsoft.Json
@@ -11,8 +9,8 @@
 <div  class="container p-3 m-auto">
     @if (!string.IsNullOrWhiteSpace(errorMessage))
     {
-        <div class="alert alert-danger position-absolute top-0 m-3 w-75" role="alert">
-            <p class="text-danger fs-4 text-center">@errorMessage</p>
+        <div class="alert alert-danger  m-3 w-100 d-flex justify-content-end" role="alert">
+            <p class="text-danger fs-4 text-center text-wrap">@errorMessage</p>
         </div>
 
     }
@@ -58,7 +56,7 @@
     private string? errorMessage;
 
     [Inject]
-    public IRequestService? RequestService { get; set; }
+    public IRequestService? Service { get; set; }
 
     private async Task  HandleSubmit()
     {
@@ -77,7 +75,7 @@
             }
 
             var jsonObject = JsonConvert.SerializeObject(user);
-            var response = await RequestService!.PostAsync(jsonObject, "Auth/Register");
+            var response = await Service!.PostAsync(jsonObject, "Auth/Register");
 
             await GotoPage();
         }catch(Exception Ex)
@@ -89,14 +87,16 @@
 
     public async Task GotoPage()
     {
-      
-        var jsonObject = JsonConvert.SerializeObject(Userlogin);
-        var response = await RequestService!.PostAsync(jsonObject, "Auth/login");
 
-        if(!response)
+        var jsonObject = JsonConvert.SerializeObject(Userlogin);
+        var response = await Service!.PostAsync(jsonObject, "Auth/login");
+
+        if(!response.isSuccess)
         {
             errorMessage = "No se pudo iniciar seccion";
-        }
+            return;
+        };
+        await Service.CreateCookies("AuthToken", response.responseContent, 7);
         Navigation.NavigateTo("/");
     }
 

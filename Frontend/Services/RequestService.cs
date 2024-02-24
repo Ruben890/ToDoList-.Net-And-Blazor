@@ -3,25 +3,24 @@ using System.Net.Http.Json;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.JSInterop;
 using System.Text;
-using Microsoft.JSInterop.Implementation;
+using Newtonsoft.Json.Linq;
+using System.Net.Http.Headers;
 
 
 namespace Frontend.Services
 {
     public class RequestService : IRequestService
     {
-
+      
         public string BaseAddres;
         private readonly HttpClient _httpClient;
-        private readonly JSRuntime _runtime;
+        private readonly IJSRuntime _jsRuntime;
 
-        public RequestService(HttpClient http, JSRuntime jS)
+        public RequestService(HttpClient http, IJSRuntime jsRuntime)
         {
             BaseAddres = http.BaseAddress!.ToString() + "api/";
             _httpClient = http;
-            _runtime = jS;
-
-
+            _jsRuntime = jsRuntime;
         }
 
         public async Task<string> GetAllAsync(string action)
@@ -70,24 +69,18 @@ namespace Frontend.Services
             }
         }
 
-        public async Task<bool> PostAsync(string jsonObject, string action)
+        public async Task<(bool isSuccess, string responseContent)> PostAsync(string jsonObject, string action)
         {
             try
             {
                 var content = new StringContent(jsonObject, UnicodeEncoding.UTF8, "application/json");
                 var postResult = await _httpClient.PostAsync(BaseAddres + action, content);
-                var postContent = await postResult.Content.ReadAsStringAsync();
-                if (!postResult.IsSuccessStatusCode)
-                {
-                    return false;
-                }
-
-                return true;
+                var responseContent = await postResult.Content.ReadAsStringAsync();
+                return (postResult.IsSuccessStatusCode, responseContent);
             }
             catch (Exception ex)
             {
-
-                throw new Exception($"error al agregar los datos:{ex.Message}");
+                throw new Exception($"Error al agregar los datos: {ex.Message}");
             }
         }
 
@@ -134,33 +127,52 @@ namespace Frontend.Services
             }
         }
 
-
-        public async Task<bool> CreateCookies(string name, int value, int daysToExpire)
+        public async Task CreateCookies(string name, string value, int daysToExpire)
         {
-            var model = await _runtime.InvokeAsync<JSObjectReference>("import", "./js/Cookies");
-            var cookies = await _runtime.InvokeAsync<bool>("AddCookies", name, value, daysToExpire);
-
-            if (!cookies)
+            try
             {
-                return false;
+                var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/Cookies.js");
+                await module.InvokeVoidAsync("AddCookies", name, value, daysToExpire);
             }
+            catch (Exception ex)
+            {
+                throw new Exception("error al agregar la cookie" + ex.Message);
+            }
+        }
+        public async Task<string> GetCookie(string nameCookie)
+        {
+            try
+            {
+                var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/Cookies.js");
+                var data = await module.InvokeAsync<string>("GetCookie", nameCookie);
 
-            return true;
+                if (string.IsNullOrWhiteSpace(data))
+                {
+                    return "No se ha encontrado la cookie solicitada";
+                }
 
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("error al obtener la cookie" + ex.Message);
+            }
         }
 
-        public async Task<string> GetCookie(string nameCookie) 
+
+        public void SetAuthorizationToken(string authorizationToken)
         {
-            var model = await _runtime.InvokeAsync<JSObjectReference>("import", "./js/Cookies");
-            var token = await model.InvokeAsync<string>("GetCookie", nameCookie);
-
-            if (string.IsNullOrWhiteSpace(token))
+            if (!string.IsNullOrEmpty(authorizationToken))
             {
-                return "No se ha encontrado la cookies colisitada";
+                if (_httpClient.DefaultRequestHeaders.Contains("Authorization"))
+                {
+                    _httpClient.DefaultRequestHeaders.Remove("Authorization");
+                }
+                _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {authorizationToken}");
             }
+        }
 
 
-            return token;
-        } 
+
     }
 }

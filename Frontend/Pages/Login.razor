@@ -1,27 +1,21 @@
 ﻿@page "/login"
+@inject IJSRuntime JS;
 @layout AuthLayaut
 @inject NavigationManager NavigationManager
 
 
 @using System.ComponentModel.DataAnnotations
 @using System.Text.RegularExpressions
+@using Newtonsoft.Json
 
 
 <div class="container">
 
-    @if (!string.IsNullOrWhiteSpace(ErrorMessageEmail))
+    @if (!string.IsNullOrWhiteSpace(ErrorMessage))
     {
 
-        <div class="alert alert-danger position-absolute top-0 m-3 w-75" role="alert">
-            <p class="text-danger fs-4 text-center">@ErrorMessageEmail</p>
-        </div>
-
-    }
-
-    @if (!string.IsNullOrWhiteSpace(ErrorMessagePassword))
-    {
-        <div class="alert alert-danger position-absolute top-0 m-3 w-75 left-5" role="alert">
-            <p class="text-danger fs-4 text-center">@ErrorMessagePassword</p>
+        <div class="alert alert-danger  m-3 w-100 d-flex justify-content-end" role="alert">
+            <p class="text-danger fs-4 text-center text-wrap">@ErrorMessage</p>
         </div>
 
     }
@@ -59,26 +53,40 @@
 @code {
 
     private SingInDTO user = new SingInDTO();
-    private string? ErrorMessageEmail;
+    private string? ErrorMessage;
     private string? ErrorMessagePassword;
+
+
+    [Inject]
+    public IRequestService? Service { get; set; }
 
     private async Task HandleSubmit()
     {
         if (!IsValidEmail(user.Email))
         {
-            ErrorMessageEmail = "Please enter a valid email address.";
+            ErrorMessage = "Please enter a valid email address.";
             return;
         }
 
         if (string.IsNullOrWhiteSpace(user.Password))
         {
-            ErrorMessagePassword = "Please enter your password.";
+            ErrorMessage = "Please enter your password.";
             return;
         }
 
-        
+        var JsonObject = JsonConvert.SerializeObject(user);
+        var response = await Service!.PostAsync(JsonObject, "Auth/login");
+        if (!response.isSuccess)
+        {
+            ErrorMessage = $"{response.responseContent}";
+            return;
+        }
+
+        await Service.CreateCookies("AuthToken", response.responseContent, 7);
         NavigationManager.NavigateTo("/");
     }
+
+
 
     private bool IsValidEmail(string email)
     {
