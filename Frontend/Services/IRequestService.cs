@@ -13,7 +13,7 @@ namespace Frontend.Services
         Task<string> GetAllAsync(string action);
         Task<string> GetAsync(int id, string action);
         Task<(bool isSuccess, string responseContent)> PostAsync(string jsonObject, string action);
-        Task<bool> PutAsync(int id, string jsonObject, string action);
+        Task<bool> PutAsync(string jsonObject, string action);
         
     }
 }
