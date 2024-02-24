@@ -69,14 +69,13 @@ namespace Frontend.Services
         }
 
 
-        public async Task<bool> PutAsync(int id, string jsonObject, string action)
+        public async Task<bool> PutAsync(string jsonObject, string action)
         {
             try
             {
 
-                var url = $"{BaseAddres}{action}/{id}";
                 var content = new StringContent(jsonObject, UnicodeEncoding.UTF8, "application/json");
-                var PuthResult = await _httpClient.PutAsync(url, content);
+                var PuthResult = await _httpClient.PutAsync(BaseAddres + action, content);
                 var PutContent = await PuthResult.Content.ReadAsStringAsync();
                 if (PuthResult.IsSuccessStatusCode)
                 {
