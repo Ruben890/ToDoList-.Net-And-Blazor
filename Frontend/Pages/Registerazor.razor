@@ -1,6 +1,7 @@
 ﻿@page "/register"
 @layout AuthLayaut
 @inject NavigationManager Navigation
+@inject JSRuntime Js
 
 @using System.Text.RegularExpressions
 @using Frontend.Services
@@ -88,6 +89,7 @@
 
     public async Task GotoPage()
     {
+      
         var jsonObject = JsonConvert.SerializeObject(Userlogin);
         var response = await RequestService!.PostAsync(jsonObject, "Auth/login");
 

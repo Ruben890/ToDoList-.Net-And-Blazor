@@ -1,10 +1,10 @@
-﻿@using Frontend.Services.Tasks
-@inject ToDoService TaskService
+﻿
+
 
 
 <div>
     <form @onsubmit="SearchTasks" class="d-flex">
-        <input type="search"  @bind="@title" placeholder="Search by title" class="form-control" />
+        <input type="search" @bind="@title" placeholder="Search by title" class="form-control" />
         <div class="ms-2">
             <button type="submit" class="btn btn-primary">Search</button>
         </div>

@@ -1,55 +1,43 @@
 ﻿@using Frontend.Services
 @using Frontend.Shared
 @using Newtonsoft.Json
-@inject ToDoService TaskService
 
 
 
 
 
-@* @if (ToDoList.Count = 0)
-{
-    <div class="container m-auto p-3 text-center">
-        <p class="fs-1 text-wrap">No tasks available.</p>
-    </div>
 
-}
-else if (ToDoList is null)
-{
-    <Loading />
-}
-else
-{
- *@
-    <div class="p-3 m-2">
-        <div>
-            @foreach (var task in ToDoList!)
-            {
-                string headerColorClass = task.IsCompleted ? "bg-success" : "bg-danger";
-                string isCompleteContent = task.IsCompleted ? "Complete" : " Incomplete";
-                string truncatedDescription = task.Description.Length > 100 ? task.Description.Substring(0, 100) + "..." : task.Description;
 
-                <div class="card p-2 m-2 mt-5">
-                    <div class="d-flex w-100 justify-content-between card-header @headerColorClass">
 
-                        <h2>@task.Title</h2>
-                        <button class="text-white p-2 text-center fs-4 btn border btn-isCompleteC">
-                            @isCompleteContent
-                        </button>
-                    </div>
+<div class="p-3 m-2">
+    <div>
+        @foreach (var task in ToDoList!)
+        {
+            string headerColorClass = task.IsCompleted ? "bg-success" : "bg-danger";
+            string isCompleteContent = task.IsCompleted ? "Complete" : " Incomplete";
+            string truncatedDescription = task.Description.Length > 100 ? task.Description.Substring(0, 100) + "..." : task.Description;
 
-                    <div class="card-body">
-                        <p>@truncatedDescription</p>
-                    </div>
+            <div class="card p-2 m-2 mt-5">
+                <div class="d-flex w-100 justify-content-between card-header @headerColorClass">
 
-                    <div class="card-footer">
-                        <strong>@task.DateCreated</strong>
-                    </div>
+                    <h2>@task.Title</h2>
+                    <button class="text-white p-2 text-center fs-4 btn border btn-isCompleteC">
+                        @isCompleteContent
+                    </button>
                 </div>
-            }
-        </div>
 
+                <div class="card-body">
+                    <p>@truncatedDescription</p>
+                </div>
+
+                <div class="card-footer">
+                    <strong>@task.DateCreated</strong>
+                </div>
+            </div>
+        }
     </div>
+
+</div>
 @* }
  *@
 
@@ -67,8 +55,8 @@ else
     {
         ToDoList ??= new();
 
-        var response = await Service.GetAllAsync("Tasks");
-        if(string.IsNullOrEmpty(response))
+        var response = await Service!.GetAllAsync("Tasks");
+        if (string.IsNullOrEmpty(response))
         {
             ToDoList = JsonConvert.DeserializeObject<List<ToDoDTO>>(response);
         }

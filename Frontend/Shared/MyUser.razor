@@ -1,32 +1,14 @@
-﻿@inject AuthServices Auth
+﻿
 
 
 
 <div class="container text-white">
     <div class="p-2 text-center">
-        <p><strong>@user!.Name @user.LastName</strong></p>
+        <p><strong></strong></p>
     </div>
 </div>
 
 @code {
-    private UserDTO? user = new UserDTO();
-
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadUser();
-    }
-
-    private async Task LoadUser()
-    {
-        try
-        {
-            user = await Auth.GetMyUser();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error al obtener el usuario: {ex.Message}");
-
-        }
-    }
+    
 
 }

@@ -2,7 +2,9 @@
     let date = new Date();
     date.setTime(date.getTime() + (daysToExpire * 24 * 60 * 60 * 1000));
     let expires = `expires=${date.toUTCString()}`
-    document.cookie = `${name}=${value};${expires};path=/`;
+     document.cookie = `${name}=${value};${expires};path=/`;
+
+     return document.cookie.includes(`${name}=${value}`);
 }
 
  export const GetCookie = (name) => {
