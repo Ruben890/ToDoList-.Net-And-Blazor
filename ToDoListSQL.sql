@@ -28,6 +28,7 @@ DELETE FROM Users WHERE UserId = 1;
 
 
 DELETE Users WHERE UserId = 2;
+DELETE Tasks WHERE TasksId = 2;
 UPDATE Users
 SET Name = 'Rosanny Escarlet'
 WHERE UserId = 1;

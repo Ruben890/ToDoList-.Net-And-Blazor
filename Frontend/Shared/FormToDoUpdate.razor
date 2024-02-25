@@ -101,7 +101,11 @@
 
 
 
-
+    private async Task<int> GetUserId()
+    {
+        var userIdString = await Service.GetCookie("userId");
+        return int.TryParse(userIdString, out int userId) ? userId : 0;
+    }
 
 
 

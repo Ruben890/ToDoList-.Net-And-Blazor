@@ -61,6 +61,7 @@ namespace Backend.Services.Users
                     {
                         var userDTO = new UserDTO
                         {
+                            Id = userData.UserId,
                             Name = userData.Name,
                             LastName = userData.LastName,
                             Email = userData.Email

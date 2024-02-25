@@ -23,7 +23,9 @@
         if(!string.IsNullOrEmpty(response)){
 
             user = JsonConvert.DeserializeObject<UserDTO>(response);
+            await Service.CreateCookies("userId", user.Id.ToString(), 1);
         }
+
 
     }
 }
