@@ -1,5 +1,4 @@
-﻿using Microsoft.JSInterop;
-
+﻿
 namespace Frontend.Services
 {
     public interface IRequestService

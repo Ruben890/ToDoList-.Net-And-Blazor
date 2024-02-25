@@ -4,8 +4,14 @@
 
 <div class="container">
 
+
+
     @if (toDo is not null)
     {
+
+        string StyleErrorInputTitel = !string.IsNullOrWhiteSpace(ErrorMessageTitle) ? "border-danger" : " " ;
+        string StyleErrorInputDescription = !string.IsNullOrWhiteSpace(ErrorMessageDescription) ? "border-danger" : " ";
+
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -14,22 +20,34 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form >
                             <div class="container p-3">
                                 <label form="title" class="form-label">Title</label>
-                                <input type="text" name="title"  placeholder="Title" maxlength="100" class="form-control"  @bind="@toDo.Title"/>
-                                <label for="Description" class="form-label" >Description</label>
-                                <textarea class="form-control" @bind="@toDo.Description" style="resize: none; height:150px" maxlength="300"></textarea>
-                               <div class="d-flex">
+                                <input type="text" name="title" placeholder="Title" maxlength="100" class="form-control @StyleErrorInputTitel" @bind="@toDo.Title" required />
+                                @if (!string.IsNullOrWhiteSpace(ErrorMessageTitle))
+                                {
+                                    <p class="text-danger">
+                                        @ErrorMessageTitle
+                                    </p>
+                                }
+                                <label for="Description" class="form-label">Description</label>
+                                <textarea class="form-control @StyleErrorInputDescription" @bind="@toDo.Description" style="resize: none; height:150px" maxlength="300" required></textarea>
+                                @if (!string.IsNullOrWhiteSpace(ErrorMessageDescription))
+                                {
+                                    <p class="text-danger">
+                                        @ErrorMessageDescription
+                                    </p>
+                                }
+                                <div class="d-flex">
                                     <InputCheckbox class="form-check" @bind-Value="@toDo.IsCompleted" DisplayName="IsCompleted" />
                                     <label class="form-label ms-2 mt-1" for="IsCompleted">Tarea completada</label>
-                               </div>
+                                </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                        <button type="button" class="btn btn-primary" @onclick="OnClieckSubmit">Guardar Cambios</button>
                     </div>
                 </div>
             </div>
@@ -45,6 +63,10 @@
     [Parameter]
     [EditorRequired]
     public ToDoDTO? toDo { get; set; }
+    private string? ErrorMessageTitle;
+    private string? ErrorMessageDescription;
+
+
 
     [Inject]
     public IRequestService? Service { get; set; }
@@ -52,9 +74,30 @@
 
     protected override Task OnParametersSetAsync()
     {
+        toDo ??= new();
+
+
+
+
+
         return base.OnParametersSetAsync();
     }
 
+
+    private async Task OnClieckSubmit()
+    {
+
+        if (toDo!.Title is not null && toDo.Title.Length > 100)
+        {
+            ErrorMessageTitle = "El título no puede exceder los 100 caracteres.";
+
+        }
+
+        if (toDo.Description is not null && toDo.Description.Length > 300)
+        {
+            ErrorMessageDescription = " La descripción no puede exceder los 300 caracteres.";
+        }
+    }
 
 
 
