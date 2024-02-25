@@ -1,0 +1,50 @@
+﻿@page "/addToDo"
+
+@if (!string.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <div class="alert alert-danger  m-3 w-100 d-flex  justify-content-center" role="alert">
+        <p class="text-danger fs-4 text-center text-wrap">@ErrorMessage</p>
+    </div>
+}
+
+
+<div class="container mt-5 p-3 position-relative">
+    <div class="rounded border">
+        <form @onsubmit="HandleSubmit" class="p-5">
+            <h1 class="text-center fs-3 border-bottom pb-3 w-100">Agregar nueva tarea</h1>
+            <div class="container m-3 mt-4">
+                <label class="form-label">Title</label>
+                <input class="form-control" maxlength="100" placeholder="Title" @bind="@ToDo.Title" required />
+                <label class="form-label">Description</label>
+                <textarea class="form-control" @bind="@ToDo.Description" style="resize: none; height:150px" maxlength="300" placeholder="Description" required></textarea>
+                <div class="d-flex">
+                    <InputCheckbox class="form-check" @bind-Value="@ToDo.IsCompleted" />
+                    <label class="form-label ms-2 mt-1" for="IsCompleted">Tarea completada</label>
+                </div>
+                <div class="d-flex w-100 justify-content-center mt-3 m-2">
+                    <button type="submit" class="btn btn-primary p-2">
+                        Agregar nueva tarea
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@code {
+    private ToDoDTO ToDo = new ToDoDTO();
+    private string? ErrorMessage;
+
+    private async Task HandleSubmit()
+    {
+
+        if (string.IsNullOrEmpty(ToDo.Title) || string.IsNullOrEmpty(ToDo.Description))
+        {
+            ErrorMessage = "no puede haver ningun campo vacio";
+        }
+
+
+    }
+
+}
