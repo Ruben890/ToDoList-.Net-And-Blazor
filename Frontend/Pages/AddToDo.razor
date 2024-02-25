@@ -1,9 +1,11 @@
 ﻿@page "/addToDo"
 
+
 @inject IRequestService Service
 @inject NavigationManager Navigation;
 
 @using Newtonsoft.Json;
+
 
 
 
@@ -26,7 +28,11 @@
                 <label class="form-label">Description</label>
                 <textarea class="form-control" @bind="@ToDo.Description" style="resize: none; height:150px" maxlength="300" placeholder="Description" required></textarea>
                 <div class="d-flex">
+<<<<<<< HEAD
                     <input type="checkbox" class="form-check" @bind="@ToDo.IsCompleted" />
+=======
+                    <InputCheckbox class="form-check" @bind-Value="@ToDo.IsCompleted" />
+>>>>>>> a3a72012c0d15096712efed0cf260ab6028c4d5c
                     <label class="form-label ms-2 mt-1" for="IsCompleted">Tarea completada</label>
                 </div>
                 <div class="d-flex w-100 justify-content-center mt-3 m-2">
@@ -46,6 +52,7 @@
 
     private async Task HandleSubmit()
     {
+
         try
         {
             
