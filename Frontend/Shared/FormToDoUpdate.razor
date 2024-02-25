@@ -72,15 +72,15 @@
     public IRequestService? Service { get; set; }
 
 
-    protected override Task OnParametersSetAsync()
+    protected override async Task OnParametersSetAsync()
     {
         toDo ??= new();
 
+        await OnClieckSubmit();
 
 
 
-
-        return base.OnParametersSetAsync();
+      
     }
 
 

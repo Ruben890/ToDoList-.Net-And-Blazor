@@ -2,7 +2,7 @@
 @inject IJSRuntime JS;
 @layout AuthLayaut
 @inject NavigationManager NavigationManager
-
+@inject IRequestService Service;
 
 @using System.ComponentModel.DataAnnotations
 @using System.Text.RegularExpressions
@@ -56,8 +56,6 @@
     private string? ErrorMessage;
 
 
-    [Inject]
-    public IRequestService? Service { get; set; }
 
     private async Task HandleSubmit()
     {

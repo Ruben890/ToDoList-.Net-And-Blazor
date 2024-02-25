@@ -1,14 +1,29 @@
-﻿
+﻿@using Newtonsoft.Json
+@inject IRequestService Service;
 
 
 
 <div class="container text-white">
     <div class="p-2 text-center">
-        <p><strong></strong></p>
+        <p><strong>@user!.Name @user.LastName</strong></p>
     </div>
 </div>
 
 @code {
-    
+    public UserDTO? user { get; set; }
 
+
+    protected override async Task OnInitializedAsync()
+    {
+        user ??= new();
+
+        var token = await Service!.GetCookie("AuthToken");
+        Service.SetAuthorizationToken(token);
+        var response = await Service.GetAllAsync("Auth/myUser");
+        if(!string.IsNullOrEmpty(response)){
+
+            user = JsonConvert.DeserializeObject<UserDTO>(response);
+        }
+
+    }
 }
