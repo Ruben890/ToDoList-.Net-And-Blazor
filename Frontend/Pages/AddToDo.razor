@@ -51,33 +51,33 @@
 
         try
         {
-            
+
             if (string.IsNullOrEmpty(ToDo.Title) || string.IsNullOrEmpty(ToDo.Description))
             {
                 ErrorMessage = "No puede haber ningún campo vacío";
                 return;
             }
 
-           
+
             int userId = await GetUserId();
 
-           
+
             if (userId == 0)
             {
                 ErrorMessage = "No se pudo obtener un ID de usuario válido";
                 return;
             }
 
-           
+
             ToDo.UserId = userId;
 
-           
+
             var token = await Service.GetCookie("AuthToken");
             Service.SetAuthorizationToken(token);
 
             var jsonObject = JsonConvert.SerializeObject(ToDo);
 
-           
+
             var response = await Service.PostAsync(jsonObject, "Tasks/AddTask");
 
 
@@ -85,6 +85,7 @@
             {
                 ErrorMessage = "Ha ocurrido un error al crear una nueva tarea";
             }
+            Navigation.NavigateTo("/");
         }
         catch (Exception ex)
         {
