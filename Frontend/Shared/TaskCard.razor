@@ -22,6 +22,16 @@
             string truncatedDescription = task.Description.Length > 100 ? task.Description.Substring(0, 100) + "..." : task.Description;
 
             <div class="card p-2 m-2 mt-5">
+                <div class="m-2">
+                    <button 
+                        type="button" 
+                        class="btn btn-primary" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#staticBackdrop"
+                            @onclick="() => OnEditAsync(task)">
+                        Edictat Tarea
+                    </button>
+                </div>
                 <div class="d-flex w-100 justify-content-between card-header @headerColorClass">
 
                     <h2>@task.Title</h2>
@@ -54,6 +64,9 @@
     [EditorRequired]
     public string? SearchTitle { get; set; }
 
+    [Parameter]
+    public EventCallback<ToDoDTO> OnEdit { get; set; }
+
 
     protected override async Task OnParametersSetAsync()
     {
@@ -69,6 +82,11 @@
             ToDoList = JsonConvert.DeserializeObject<List<ToDoDTO>>(response);
         }
 
+    }
+
+    private async Task OnEditAsync(ToDoDTO todo)
+    {
+        await OnEdit.InvokeAsync(todo);
     }
 
 

@@ -54,7 +54,6 @@
 
     private SingInDTO user = new SingInDTO();
     private string? ErrorMessage;
-    private string? ErrorMessagePassword;
 
 
     [Inject]
@@ -82,7 +81,7 @@
             return;
         }
 
-        await Service.CreateCookies("AuthToken", response.responseContent, 7);
+        await Service.CreateCookies("AuthToken", response.responseContent, 1);
         NavigationManager.NavigateTo("/");
     }
 

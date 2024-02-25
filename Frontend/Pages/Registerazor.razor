@@ -96,7 +96,7 @@
             errorMessage = "No se pudo iniciar seccion";
             return;
         };
-        await Service.CreateCookies("AuthToken", response.responseContent, 7);
+        await Service.CreateCookies("AuthToken", response.responseContent, 1);
         Navigation.NavigateTo("/");
     }
 
